@@ -1,0 +1,4 @@
+# Validated with Python 3.12.
+mujoco==3.12.0
+numpy==2.3.5
+matplotlib==3.11.1

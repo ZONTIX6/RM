@@ -1,0 +1,19 @@
+# Local environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.claude/
+.agents/
+.codex/
+.env
+.env.*
+!.env.example
+build/
+.DS_Store
+Thumbs.db
+aircraft/*.npz
+aircraft/trajectory.png
+aircraft/swarm_paths.png
+aircraft/swarm_trajectory.png
+aircraft/swarm_convergence.png

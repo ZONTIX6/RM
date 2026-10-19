@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="phantom4pro_swarm">
+  <compiler angle="radian" autolimits="true" />
+  <option timestep="0.005" gravity="0 0 -9.81" />
+  <visual>
+    <global azimuth="135" elevation="-25" offwidth="1024" offheight="1024" />
+    <quality shadowsize="2048" />
+    <map force="0.1" />
+  </visual>
+  <default>
+    <geom contype="0" conaffinity="0" density="0" />
+    <joint damping="0" frictionloss="0" armature="0" />
+  </default>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.74 0.76 0.78" rgb2="0.88 0.89 0.90" />
+    <material name="ground_grid" texture="grid" texrepeat="8 8" reflectance="0.08" />
+    <material name="phantom_white" rgba="0.93 0.94 0.93 1" />
+    <material name="warm_white" rgba="0.86 0.87 0.84 1" />
+    <material name="dark_plastic" rgba="0.08 0.085 0.09 1" />
+    <material name="lens_glass" rgba="0.03 0.05 0.07 1" />
+    <material name="prop_blur_cw" rgba="0.10 0.12 0.14 0.30" />
+    <material name="prop_blur_ccw" rgba="0.10 0.12 0.14 0.22" />
+    <material name="nav_red" rgba="0.85 0.08 0.04 1" />
+    <material name="nav_green" rgba="0.06 0.55 0.16 1" />
+  </asset>
+  <worldbody>
+    <light name="key" pos="0 -3 5" dir="0 1 -1" diffuse="0.8 0.8 0.78" />
+    <light name="fill" pos="-3 2 3" dir="1 -0.5 -1" diffuse="0.35 0.36 0.38" />
+    <camera name="overview" pos="1.45 -1.70 1.25" xyaxes="0.761 0.649 0  -0.238 0.279 0.930" />
+    <geom name="ground" type="plane" size="6 6 0.05" pos="0 0 -0.05" material="ground_grid" contype="2" conaffinity="1" friction="0.8 0.1 0.1" />
+    <body name="quadrotor_0" pos="1.746545014686478 1.8302620020311275 0.099">
+      <freejoint name="root_0" />
+      <inertial pos="0 0 0" mass="1.388" diaginertia="0.010 0.010 0.018" />
+      <geom name="main_shell_0" type="ellipsoid" pos="0 0 0.018" size="0.082 0.070 0.028" material="phantom_white" />
+      <geom name="upper_shell_0" type="ellipsoid" pos="0 0 0.041" size="0.060 0.052 0.018" material="phantom_white" />
+      <geom name="belly_0" type="ellipsoid" pos="0 0 -0.018" size="0.060 0.052 0.018" material="warm_white" />
+      <geom name="battery_pack_0" type="box" pos="-0.034 0 0.018" size="0.026 0.044 0.017" material="dark_plastic" />
+      <geom name="nose_cap_0" type="ellipsoid" pos="0.070 0 0.020" size="0.030 0.045 0.017" material="phantom_white" />
+      <geom name="gimbal_yoke_0" type="capsule" fromto="-0.020 -0.032 -0.046  -0.020 0.032 -0.046" size="0.005" material="dark_plastic" />
+      <geom name="gimbal_ball_0" type="sphere" pos="0.008 0 -0.045" size="0.014" material="dark_plastic" />
+      <geom name="camera_body_0" type="box" pos="0.026 0 -0.070" size="0.027 0.023 0.018" material="dark_plastic" />
+      <geom name="camera_lens_0" type="cylinder" pos="0.055 0 -0.070" euler="0 1.57079632679 0" size="0.013 0.006" material="lens_glass" />
+      <geom name="leg_fr_0" type="capsule" fromto="0.063 -0.050 -0.010  0.085 -0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_fl_0" type="capsule" fromto="0.063 0.050 -0.010  0.085 0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_rr_0" type="capsule" fromto="-0.063 -0.050 -0.010  -0.085 -0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_rl_0" type="capsule" fromto="-0.063 0.050 -0.010  -0.085 0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="skid_r_0" type="capsule" fromto="-0.105 -0.094 -0.145  0.105 -0.094 -0.145" size="0.006" material="warm_white" contype="1" conaffinity="2" friction="0.8 0.1 0.1" />
+      <geom name="skid_l_0" type="capsule" fromto="-0.105 0.094 -0.145  0.105 0.094 -0.145" size="0.006" material="warm_white" contype="1" conaffinity="2" friction="0.8 0.1 0.1" />
+      <geom name="arm0_0" type="capsule" fromto="0.018 -0.018 0.024  0.12374 -0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm1_0" type="capsule" fromto="-0.018 -0.018 0.024  -0.12374 -0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm2_0" type="capsule" fromto="-0.018 0.018 0.024  -0.12374 0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm3_0" type="capsule" fromto="0.018 0.018 0.024  0.12374 0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="motor0_0" type="cylinder" pos="0.12374 -0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor1_0" type="cylinder" pos="-0.12374 -0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor2_0" type="cylinder" pos="-0.12374 0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor3_0" type="cylinder" pos="0.12374 0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="led0_0" type="sphere" pos="0.146 -0.146 0.021" size="0.006" material="nav_red" />
+      <geom name="led1_0" type="sphere" pos="-0.146 -0.146 0.021" size="0.006" material="nav_red" />
+      <geom name="led2_0" type="sphere" pos="-0.146 0.146 0.021" size="0.006" material="nav_green" />
+      <geom name="led3_0" type="sphere" pos="0.146 0.146 0.021" size="0.006" material="nav_green" />
+      <site name="rotor0_0" pos="0.12374 -0.12374 0.03" size="0.008" rgba="1 0 0 0.35" />
+      <site name="rotor1_0" pos="-0.12374 -0.12374 0.03" size="0.008" rgba="1 0 0 0.35" />
+      <site name="rotor2_0" pos="-0.12374 0.12374 0.03" size="0.008" rgba="0 1 0 0.35" />
+      <site name="rotor3_0" pos="0.12374 0.12374 0.03" size="0.008" rgba="0 1 0 0.35" />
+      <body name="prop0_body_0" pos="0.12374 -0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor0_spin_0" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop0_blur_0" type="cylinder" size="0.1194 0.0012" material="prop_blur_cw" />
+        <geom name="prop0_a_0" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop0_b_0" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop1_body_0" pos="-0.12374 -0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor1_spin_0" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop1_blur_0" type="cylinder" size="0.1194 0.0012" material="prop_blur_ccw" />
+        <geom name="prop1_a_0" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop1_b_0" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop2_body_0" pos="-0.12374 0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor2_spin_0" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop2_blur_0" type="cylinder" size="0.1194 0.0012" material="prop_blur_cw" />
+        <geom name="prop2_a_0" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop2_b_0" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop3_body_0" pos="0.12374 0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor3_spin_0" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop3_blur_0" type="cylinder" size="0.1194 0.0012" material="prop_blur_ccw" />
+        <geom name="prop3_a_0" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop3_b_0" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+    </body>
+    <body name="quadrotor_1" pos="0.8910566453843647 -1.579826166210763 0.099">
+      <freejoint name="root_1" />
+      <inertial pos="0 0 0" mass="1.388" diaginertia="0.010 0.010 0.018" />
+      <geom name="main_shell_1" type="ellipsoid" pos="0 0 0.018" size="0.082 0.070 0.028" material="phantom_white" />
+      <geom name="upper_shell_1" type="ellipsoid" pos="0 0 0.041" size="0.060 0.052 0.018" material="phantom_white" />
+      <geom name="belly_1" type="ellipsoid" pos="0 0 -0.018" size="0.060 0.052 0.018" material="warm_white" />
+      <geom name="battery_pack_1" type="box" pos="-0.034 0 0.018" size="0.026 0.044 0.017" material="dark_plastic" />
+      <geom name="nose_cap_1" type="ellipsoid" pos="0.070 0 0.020" size="0.030 0.045 0.017" material="phantom_white" />
+      <geom name="gimbal_yoke_1" type="capsule" fromto="-0.020 -0.032 -0.046  -0.020 0.032 -0.046" size="0.005" material="dark_plastic" />
+      <geom name="gimbal_ball_1" type="sphere" pos="0.008 0 -0.045" size="0.014" material="dark_plastic" />
+      <geom name="camera_body_1" type="box" pos="0.026 0 -0.070" size="0.027 0.023 0.018" material="dark_plastic" />
+      <geom name="camera_lens_1" type="cylinder" pos="0.055 0 -0.070" euler="0 1.57079632679 0" size="0.013 0.006" material="lens_glass" />
+      <geom name="leg_fr_1" type="capsule" fromto="0.063 -0.050 -0.010  0.085 -0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_fl_1" type="capsule" fromto="0.063 0.050 -0.010  0.085 0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_rr_1" type="capsule" fromto="-0.063 -0.050 -0.010  -0.085 -0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_rl_1" type="capsule" fromto="-0.063 0.050 -0.010  -0.085 0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="skid_r_1" type="capsule" fromto="-0.105 -0.094 -0.145  0.105 -0.094 -0.145" size="0.006" material="warm_white" contype="1" conaffinity="2" friction="0.8 0.1 0.1" />
+      <geom name="skid_l_1" type="capsule" fromto="-0.105 0.094 -0.145  0.105 0.094 -0.145" size="0.006" material="warm_white" contype="1" conaffinity="2" friction="0.8 0.1 0.1" />
+      <geom name="arm0_1" type="capsule" fromto="0.018 -0.018 0.024  0.12374 -0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm1_1" type="capsule" fromto="-0.018 -0.018 0.024  -0.12374 -0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm2_1" type="capsule" fromto="-0.018 0.018 0.024  -0.12374 0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm3_1" type="capsule" fromto="0.018 0.018 0.024  0.12374 0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="motor0_1" type="cylinder" pos="0.12374 -0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor1_1" type="cylinder" pos="-0.12374 -0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor2_1" type="cylinder" pos="-0.12374 0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor3_1" type="cylinder" pos="0.12374 0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="led0_1" type="sphere" pos="0.146 -0.146 0.021" size="0.006" material="nav_red" />
+      <geom name="led1_1" type="sphere" pos="-0.146 -0.146 0.021" size="0.006" material="nav_red" />
+      <geom name="led2_1" type="sphere" pos="-0.146 0.146 0.021" size="0.006" material="nav_green" />
+      <geom name="led3_1" type="sphere" pos="0.146 0.146 0.021" size="0.006" material="nav_green" />
+      <site name="rotor0_1" pos="0.12374 -0.12374 0.03" size="0.008" rgba="1 0 0 0.35" />
+      <site name="rotor1_1" pos="-0.12374 -0.12374 0.03" size="0.008" rgba="1 0 0 0.35" />
+      <site name="rotor2_1" pos="-0.12374 0.12374 0.03" size="0.008" rgba="0 1 0 0.35" />
+      <site name="rotor3_1" pos="0.12374 0.12374 0.03" size="0.008" rgba="0 1 0 0.35" />
+      <body name="prop0_body_1" pos="0.12374 -0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor0_spin_1" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop0_blur_1" type="cylinder" size="0.1194 0.0012" material="prop_blur_cw" />
+        <geom name="prop0_a_1" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop0_b_1" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop1_body_1" pos="-0.12374 -0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor1_spin_1" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop1_blur_1" type="cylinder" size="0.1194 0.0012" material="prop_blur_ccw" />
+        <geom name="prop1_a_1" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop1_b_1" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop2_body_1" pos="-0.12374 0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor2_spin_1" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop2_blur_1" type="cylinder" size="0.1194 0.0012" material="prop_blur_cw" />
+        <geom name="prop2_a_1" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop2_b_1" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop3_body_1" pos="0.12374 0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor3_spin_1" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop3_blur_1" type="cylinder" size="0.1194 0.0012" material="prop_blur_ccw" />
+        <geom name="prop3_a_1" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop3_b_1" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+    </body>
+    <body name="quadrotor_2" pos="4.499975414661162 -0.5553168072916975 0.099">
+      <freejoint name="root_2" />
+      <inertial pos="0 0 0" mass="1.388" diaginertia="0.010 0.010 0.018" />
+      <geom name="main_shell_2" type="ellipsoid" pos="0 0 0.018" size="0.082 0.070 0.028" material="phantom_white" />
+      <geom name="upper_shell_2" type="ellipsoid" pos="0 0 0.041" size="0.060 0.052 0.018" material="phantom_white" />
+      <geom name="belly_2" type="ellipsoid" pos="0 0 -0.018" size="0.060 0.052 0.018" material="warm_white" />
+      <geom name="battery_pack_2" type="box" pos="-0.034 0 0.018" size="0.026 0.044 0.017" material="dark_plastic" />
+      <geom name="nose_cap_2" type="ellipsoid" pos="0.070 0 0.020" size="0.030 0.045 0.017" material="phantom_white" />
+      <geom name="gimbal_yoke_2" type="capsule" fromto="-0.020 -0.032 -0.046  -0.020 0.032 -0.046" size="0.005" material="dark_plastic" />
+      <geom name="gimbal_ball_2" type="sphere" pos="0.008 0 -0.045" size="0.014" material="dark_plastic" />
+      <geom name="camera_body_2" type="box" pos="0.026 0 -0.070" size="0.027 0.023 0.018" material="dark_plastic" />
+      <geom name="camera_lens_2" type="cylinder" pos="0.055 0 -0.070" euler="0 1.57079632679 0" size="0.013 0.006" material="lens_glass" />
+      <geom name="leg_fr_2" type="capsule" fromto="0.063 -0.050 -0.010  0.085 -0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_fl_2" type="capsule" fromto="0.063 0.050 -0.010  0.085 0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_rr_2" type="capsule" fromto="-0.063 -0.050 -0.010  -0.085 -0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="leg_rl_2" type="capsule" fromto="-0.063 0.050 -0.010  -0.085 0.086 -0.145" size="0.0055" material="warm_white" />
+      <geom name="skid_r_2" type="capsule" fromto="-0.105 -0.094 -0.145  0.105 -0.094 -0.145" size="0.006" material="warm_white" contype="1" conaffinity="2" friction="0.8 0.1 0.1" />
+      <geom name="skid_l_2" type="capsule" fromto="-0.105 0.094 -0.145  0.105 0.094 -0.145" size="0.006" material="warm_white" contype="1" conaffinity="2" friction="0.8 0.1 0.1" />
+      <geom name="arm0_2" type="capsule" fromto="0.018 -0.018 0.024  0.12374 -0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm1_2" type="capsule" fromto="-0.018 -0.018 0.024  -0.12374 -0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm2_2" type="capsule" fromto="-0.018 0.018 0.024  -0.12374 0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="arm3_2" type="capsule" fromto="0.018 0.018 0.024  0.12374 0.12374 0.030" size="0.010" material="phantom_white" />
+      <geom name="motor0_2" type="cylinder" pos="0.12374 -0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor1_2" type="cylinder" pos="-0.12374 -0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor2_2" type="cylinder" pos="-0.12374 0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="motor3_2" type="cylinder" pos="0.12374 0.12374 0.034" size="0.021 0.018" material="dark_plastic" />
+      <geom name="led0_2" type="sphere" pos="0.146 -0.146 0.021" size="0.006" material="nav_red" />
+      <geom name="led1_2" type="sphere" pos="-0.146 -0.146 0.021" size="0.006" material="nav_red" />
+      <geom name="led2_2" type="sphere" pos="-0.146 0.146 0.021" size="0.006" material="nav_green" />
+      <geom name="led3_2" type="sphere" pos="0.146 0.146 0.021" size="0.006" material="nav_green" />
+      <site name="rotor0_2" pos="0.12374 -0.12374 0.03" size="0.008" rgba="1 0 0 0.35" />
+      <site name="rotor1_2" pos="-0.12374 -0.12374 0.03" size="0.008" rgba="1 0 0 0.35" />
+      <site name="rotor2_2" pos="-0.12374 0.12374 0.03" size="0.008" rgba="0 1 0 0.35" />
+      <site name="rotor3_2" pos="0.12374 0.12374 0.03" size="0.008" rgba="0 1 0 0.35" />
+      <body name="prop0_body_2" pos="0.12374 -0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor0_spin_2" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop0_blur_2" type="cylinder" size="0.1194 0.0012" material="prop_blur_cw" />
+        <geom name="prop0_a_2" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop0_b_2" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop1_body_2" pos="-0.12374 -0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor1_spin_2" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop1_blur_2" type="cylinder" size="0.1194 0.0012" material="prop_blur_ccw" />
+        <geom name="prop1_a_2" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop1_b_2" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop2_body_2" pos="-0.12374 0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor2_spin_2" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop2_blur_2" type="cylinder" size="0.1194 0.0012" material="prop_blur_cw" />
+        <geom name="prop2_a_2" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop2_b_2" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+      <body name="prop3_body_2" pos="0.12374 0.12374 0.057">
+        <inertial pos="0 0 0" mass="0.000001" diaginertia="0.000000001 0.000000001 0.000000002" />
+        <joint name="rotor3_spin_2" type="hinge" axis="0 0 1" limited="false" />
+        <geom name="prop3_blur_2" type="cylinder" size="0.1194 0.0012" material="prop_blur_ccw" />
+        <geom name="prop3_a_2" type="box" pos="0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+        <geom name="prop3_b_2" type="box" pos="-0.048 0 0.002" size="0.057 0.007 0.0015" material="dark_plastic" />
+      </body>
+    </body>
+    <geom name="goal_pad" type="cylinder" pos="2.0 0.0 0.005" size="0.12 0.005" rgba="0.86 0.12 0.10 0.85" />
+    <geom name="target_vertical" type="capsule" fromto="2.0000 0.0000 0.0200 2.0000 0.0000 1.2500" size="0.0040" rgba="0.85 0.05 0.05 0.55" contype="0" conaffinity="0" group="1" />
+    <geom name="target_air_point" type="sphere" pos="2.0000 0.0000 1.2500" size="0.0250" rgba="0.85 0.05 0.05 0.95" contype="0" conaffinity="0" group="1" />
+    <geom name="initial_uav0" type="sphere" pos="1.7465 1.8303 0.0990" size="0.0300" rgba="0.05 0.32 0.95 0.85" contype="0" conaffinity="0" group="1" />
+    <geom name="formation_goal0" type="sphere" pos="2.0000 0.4600 1.2500" size="0.0220" rgba="0.05 0.32 0.95 0.85" contype="0" conaffinity="0" group="1" />
+    <geom name="initial_uav1" type="sphere" pos="0.8911 -1.5798 0.0990" size="0.0300" rgba="1.00 0.45 0.02 0.85" contype="0" conaffinity="0" group="1" />
+    <geom name="formation_goal1" type="sphere" pos="1.6000 -0.2300 1.2500" size="0.0220" rgba="1.00 0.45 0.02 0.85" contype="0" conaffinity="0" group="1" />
+    <geom name="initial_uav2" type="sphere" pos="4.5000 -0.5553 0.0990" size="0.0300" rgba="0.05 0.65 0.18 0.85" contype="0" conaffinity="0" group="1" />
+    <geom name="formation_goal2" type="sphere" pos="2.4000 -0.2300 1.2500" size="0.0220" rgba="0.05 0.65 0.18 0.85" contype="0" conaffinity="0" group="1" />
+  </worldbody>
+</mujoco>

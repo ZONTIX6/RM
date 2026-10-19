@@ -1,0 +1,237 @@
+<mujoco model="ntu_standard_6dof_arm">
+  <compiler angle="radian" autolimits="true"/>
+
+  <option timestep="0.001" gravity="0 0 -9.8" integrator="implicitfast" solver="Newton"
+          iterations="80" tolerance="1e-10"/>
+
+  <statistic center="0.15 0 0.28" extent="0.75"/>
+
+  <visual>
+    <headlight ambient="0.35 0.35 0.35" diffuse="0.55 0.55 0.55" specular="0.25 0.25 0.25"/>
+    <global azimuth="135" elevation="-22"/>
+    <quality shadowsize="2048"/>
+  </visual>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1="0.18 0.19 0.20" rgb2="0.23 0.24 0.25"
+             width="512" height="512"/>
+    <material name="floor_mat" texture="grid" texrepeat="3 3" reflectance="0.12"/>
+    <material name="base_mat" rgba="0.12 0.13 0.14 1"/>
+    <material name="joint_mat" rgba="0.06 0.065 0.07 1"/>
+    <material name="link_mat" rgba="0.38 0.43 0.47 1"/>
+    <material name="side_mat" rgba="0.18 0.22 0.25 1"/>
+    <material name="cover_mat" rgba="0.26 0.30 0.33 1"/>
+    <material name="fastener_mat" rgba="0.02 0.022 0.024 1"/>
+    <material name="belt_mat" rgba="0.01 0.01 0.01 1"/>
+    <material name="motor_black_mat" rgba="0.015 0.015 0.016 1"/>
+    <material name="motor_silver_mat" rgba="0.62 0.65 0.63 1"/>
+    <material name="wrist_mat" rgba="0.50 0.53 0.55 1"/>
+    <material name="tool_mat" rgba="0.72 0.74 0.72 1"/>
+    <material name="target_mat" rgba="0.86 0.18 0.12 1"/>
+    <material name="place_mat" rgba="0.10 0.45 0.70 1"/>
+  </asset>
+
+  <default>
+    <joint type="hinge" damping="1.80" armature="0.045" frictionloss="0.020"/>
+    <geom contype="0" conaffinity="0" density="750" solref="0.01 1"/>
+    <site type="sphere" size="0.008" rgba="0.95 0.18 0.12 1"/>
+    <general gaintype="fixed" gainprm="18 0 0" biastype="affine" biasprm="0 -18 -5"
+             forcelimited="true" forcerange="-24 24"/>
+  </default>
+
+  <worldbody>
+    <light name="key" pos="0.6 -0.7 1.2" dir="-0.45 0.45 -1" diffuse="0.8 0.8 0.8"/>
+    <camera name="overview" pos="0.75 -0.95 0.62" xyaxes="0.78 0.63 0 -0.30 0.37 0.88"/>
+    <geom name="floor" type="plane" size="1.3 1.3 0.02" material="floor_mat"/>
+
+    <body name="base_fixed" pos="0 0 0">
+      <geom name="base_plate" type="box" pos="0 0 0.015" size="0.18 0.13 0.015" material="base_mat"/>
+      <geom name="fixed_yaw_reference" type="box" pos="0.155 0 0.035" size="0.040 0.008 0.006" material="tool_mat"/>
+      <geom name="base_bolt_1" type="cylinder" pos="0.125 0.085 0.033" size="0.009 0.004" material="fastener_mat"/>
+      <geom name="base_bolt_2" type="cylinder" pos="0.125 -0.085 0.033" size="0.009 0.004" material="fastener_mat"/>
+      <geom name="base_bolt_3" type="cylinder" pos="-0.125 0.085 0.033" size="0.009 0.004" material="fastener_mat"/>
+      <geom name="base_bolt_4" type="cylinder" pos="-0.125 -0.085 0.033" size="0.009 0.004" material="fastener_mat"/>
+      <geom name="j1_motor_mount" type="box" pos="-0.120 -0.170 0.035" size="0.058 0.058 0.010" material="side_mat"/>
+      <geom name="j1_ground_motor_can" type="cylinder" pos="-0.120 -0.170 0.064"
+            size="0.038 0.025" material="cover_mat"/>
+      <geom name="j1_ground_motor_bottom_cap" type="cylinder" pos="-0.120 -0.170 0.037"
+            size="0.034 0.004" material="fastener_mat"/>
+      <geom name="j1_ground_motor_top_cap" type="cylinder" pos="-0.120 -0.170 0.091"
+            size="0.034 0.004" material="fastener_mat"/>
+      <geom name="j1_motor_shaft" type="cylinder" pos="-0.120 -0.170 0.112"
+            size="0.006 0.020" material="fastener_mat"/>
+      <geom name="j1_drive_pulley" type="cylinder" pos="-0.120 -0.170 0.135" size="0.030 0.010" material="fastener_mat"/>
+      <geom name="j1_driven_pulley" type="cylinder" pos="0 0 0.135" size="0.082 0.010" material="fastener_mat"/>
+      <geom name="j1_belt_left_run" type="capsule" fromto="-0.150 -0.170 0.137 -0.082 0 0.137"
+            size="0.006" material="belt_mat"/>
+      <geom name="j1_belt_right_run" type="capsule" fromto="-0.090 -0.170 0.137 0.082 0 0.137"
+            size="0.006" material="belt_mat"/>
+
+      <!-- J1 is the bottom base yaw axis. Its child contains the rotating column and the whole arm. -->
+      <body name="j1_yaw_frame" pos="0 0 0.045">
+        <joint name="j1_yaw" axis="0 0 1" range="-3.14 3.14"/>
+        <site name="j1_origin" pos="0 0 0"/>
+        <geom name="yaw_turntable" type="cylinder" pos="0 0 0" size="0.080 0.020" material="joint_mat"/>
+        <geom name="yaw_upper_flange" type="cylinder" pos="0 0 0.040" size="0.066 0.016" material="wrist_mat"/>
+        <geom name="yaw_column" type="cylinder" pos="0 0 0.090" size="0.055 0.075" material="base_mat"/>
+        <geom name="yaw_column_front_cover" type="box" pos="0.045 0 0.095" size="0.010 0.040 0.052" material="cover_mat"/>
+
+        <body name="j2_pitch_frame" pos="0 0 0.135">
+          <joint name="j2_pitch" axis="0 1 0" range="-2.36 2.36"/>
+          <site name="j2_origin" pos="0 0 0"/>
+          <geom name="shoulder_cross_pin" type="cylinder" pos="0 0 0" euler="1.570796 0 0"
+                size="0.024 0.090" material="joint_mat"/>
+          <geom name="shoulder_motor_case" type="cylinder" pos="0 0.090 0" euler="1.570796 0 0"
+                size="0.042 0.024" material="cover_mat"/>
+          <geom name="shoulder_end_cap" type="cylinder" pos="0 -0.090 0" euler="1.570796 0 0"
+                size="0.040 0.012" material="wrist_mat"/>
+          <geom name="shoulder_motor_rear_cap" type="cylinder" pos="0 0.116 0" euler="1.570796 0 0"
+                size="0.038 0.004" material="fastener_mat"/>
+          <geom name="shoulder_cable_gland" type="box" pos="-0.032 0.118 0.012" size="0.008 0.006 0.006" material="fastener_mat"/>
+          <geom name="shoulder_left_plate" type="box" pos="0 0.070 0" size="0.035 0.009 0.055" material="joint_mat"/>
+          <geom name="shoulder_right_plate" type="box" pos="0 -0.070 0" size="0.035 0.009 0.055" material="joint_mat"/>
+          <geom name="shoulder_upper_spacer" type="box" pos="0 0 0.050" size="0.032 0.060 0.007" material="side_mat"/>
+          <geom name="shoulder_lower_spacer" type="box" pos="0 0 -0.050" size="0.032 0.060 0.007" material="side_mat"/>
+
+          <!-- q=0 home: upper arm is vertical. Length = 304 mm. -->
+          <geom name="upper_arm_root_clamp" type="box" pos="0 0 0.060" size="0.040 0.052 0.018" material="side_mat"/>
+          <geom name="upper_arm_tip_clamp" type="box" pos="0 0 0.260" size="0.040 0.052 0.018" material="side_mat"/>
+          <geom name="upper_arm_main" type="capsule" fromto="0 0 0.070 0 0 0.250" size="0.024" material="link_mat"/>
+          <geom name="upper_arm_side_a" type="capsule" fromto="0 0.030 0.070 0 0.030 0.250" size="0.008" material="side_mat"/>
+          <geom name="upper_arm_side_b" type="capsule" fromto="0 -0.030 0.070 0 -0.030 0.250" size="0.008" material="side_mat"/>
+          <geom name="upper_arm_front_cover" type="box" pos="0.018 0 0.165" size="0.006 0.046 0.110" material="cover_mat"/>
+          <geom name="upper_arm_back_cover" type="box" pos="-0.018 0 0.165" size="0.006 0.046 0.110" material="cover_mat"/>
+          <geom name="upper_arm_cable_tray" type="box" pos="-0.030 0.038 0.165" size="0.006 0.007 0.105" material="fastener_mat"/>
+          <geom name="upper_arm_screw_1" type="cylinder" pos="0.025 0.041 0.080" euler="1.570796 0 0"
+                size="0.004 0.003" material="fastener_mat"/>
+          <geom name="upper_arm_screw_2" type="cylinder" pos="0.025 0.041 0.250" euler="1.570796 0 0"
+                size="0.004 0.003" material="fastener_mat"/>
+
+          <body name="j3_elbow_frame" pos="0 0 0.304">
+            <joint name="j3_pitch" axis="0 1 0" range="-2.62 2.62"/>
+            <site name="j3_origin" pos="0 0 0"/>
+            <geom name="elbow_cross_pin" type="cylinder" pos="0 0 0" euler="1.570796 0 0"
+                  size="0.022 0.080" material="joint_mat"/>
+            <geom name="elbow_front_plate" type="box" pos="0.035 0 0" size="0.010 0.050 0.040" material="joint_mat"/>
+            <geom name="elbow_motor_case" type="cylinder" pos="0 0.078 0" euler="1.570796 0 0"
+                  size="0.036 0.022" material="cover_mat"/>
+            <geom name="elbow_end_cap" type="cylinder" pos="0 -0.078 0" euler="1.570796 0 0"
+                  size="0.034 0.011" material="wrist_mat"/>
+            <geom name="elbow_motor_rear_cap" type="cylinder" pos="0 0.102 0" euler="1.570796 0 0"
+                  size="0.033 0.004" material="fastener_mat"/>
+            <geom name="elbow_cable_gland" type="box" pos="-0.025 0.104 0.010" size="0.007 0.005 0.005" material="fastener_mat"/>
+
+            <!-- q=0 home: forearm is perpendicular to upper arm and horizontal. Wrist offset = 349.8 mm. -->
+            <geom name="forearm_root_clamp" type="box" pos="0.052 0 0" size="0.018 0.047 0.034" material="side_mat"/>
+            <geom name="forearm_mid_clamp" type="box" pos="0.205 0 0" size="0.012 0.047 0.034" material="side_mat"/>
+            <geom name="forearm_main" type="capsule" fromto="0.065 0 0 0.215 0 0" size="0.022" material="link_mat"/>
+            <geom name="forearm_side_a" type="capsule" fromto="0.065 0.052 0.024 0.322 0.052 0.024" size="0.006" material="side_mat"/>
+            <geom name="forearm_side_b" type="capsule" fromto="0.065 -0.052 -0.024 0.322 -0.052 -0.024" size="0.006" material="side_mat"/>
+            <geom name="forearm_top_cover" type="box" pos="0.135 0 0.027" size="0.075 0.043 0.006" material="cover_mat"/>
+            <geom name="forearm_bottom_cover" type="box" pos="0.135 0 -0.027" size="0.075 0.043 0.006" material="cover_mat"/>
+            <geom name="forearm_cable_tray" type="box" pos="0.135 0.035 0.032" size="0.075 0.006 0.006" material="fastener_mat"/>
+            <geom name="forearm_screw_1" type="cylinder" pos="0.075 0.039 0.030" euler="1.570796 0 0"
+                  size="0.004 0.003" material="fastener_mat"/>
+            <geom name="forearm_screw_2" type="cylinder" pos="0.195 0.039 0.030" euler="1.570796 0 0"
+                  size="0.004 0.003" material="fastener_mat"/>
+            <geom name="forearm_wrist_link" type="capsule" fromto="0.215 0 0 0.3498 0 0"
+                  size="0.018" material="link_mat"/>
+            <geom name="forearm_wrist_clamp" type="box" pos="0.326 0 0"
+                  size="0.026 0.042 0.030" material="joint_mat"/>
+
+            <body name="wrist_center_frame" pos="0.3498 0 0">
+              <site name="wrist_center" pos="0 0 0" size="0.010" rgba="0.10 0.85 0.95 1"/>
+
+              <!-- J4: forearm roll, axis along forearm. -->
+              <body name="j4_roll_frame" pos="0 0 0">
+                <joint name="j4_roll" axis="1 0 0" range="-3.14 3.14"/>
+                <geom name="j4_roll_ring" type="cylinder" pos="0 0 0" euler="0 1.570796 0"
+                      size="0.046 0.014" material="wrist_mat"/>
+                <geom name="j4_black_motor_face" type="box" pos="-0.050 0 0" size="0.006 0.038 0.036" material="joint_mat"/>
+                <geom name="j4_silver_motor_body" type="cylinder" pos="-0.090 0 0" euler="0 1.570796 0"
+                      size="0.030 0.030" material="motor_silver_mat"/>
+                <geom name="j4_silver_motor_end_cap" type="cylinder" pos="-0.124 0 0" euler="0 1.570796 0"
+                      size="0.030 0.004" material="motor_silver_mat"/>
+                <geom name="j4_motor_to_roll_coupler" type="cylinder" pos="-0.026 0 0" euler="0 1.570796 0"
+                      size="0.016 0.014" material="fastener_mat"/>
+                <geom name="j4_output_flange" type="cylinder" pos="0.020 0 0" euler="0 1.570796 0"
+                      size="0.038 0.006" material="wrist_mat"/>
+                <geom name="j4_to_j5_link" type="capsule" fromto="0.032 0 0 0.095 0 0"
+                      size="0.014" material="link_mat"/>
+
+                <!-- J5: simple wrist pitch joint for the basic physical model. -->
+                <body name="j5_pitch_frame" pos="0.105 0 0">
+                  <joint name="j5_wrist_pitch" axis="0 1 0" range="-1.5708 1.5708"/>
+                  <geom name="j5_pitch_pin" type="cylinder" pos="0 0 0" euler="1.570796 0 0"
+                        size="0.024 0.034" material="joint_mat"/>
+                  <geom name="j5_to_j6_link" type="capsule" fromto="0.012 0 0 0.074 0 0"
+                        size="0.013" material="link_mat"/>
+
+                  <!-- J6: simple tool roll joint. -->
+                  <body name="j6_tool_roll_frame" pos="0.085 0 0">
+                    <joint name="j6_tool_roll" axis="1 0 0" range="-3.1416 3.1416"/>
+                    <geom name="j6_roll_body" type="cylinder" pos="0 0 0" euler="0 1.570796 0"
+                          size="0.022 0.020" material="joint_mat"/>
+                    <geom name="tool_stem" type="capsule" fromto="0.020 0 0 0.082 0 0"
+                          size="0.010" material="tool_mat"/>
+                    <geom name="gripper_palm" type="box" pos="0.105 0 0" size="0.018 0.030 0.024" material="tool_mat"/>
+                    <body name="gripper_upper_finger" pos="0.148 0 0.025">
+                      <joint name="gripper_upper_slide" type="slide" axis="0 0 1" range="0 0.018"
+                             damping="2.0" armature="0.01"/>
+                      <geom name="gripper_finger_top" type="box" pos="0 0 0" size="0.040 0.005 0.006"
+                            material="joint_mat"/>
+                    </body>
+                    <body name="gripper_lower_finger" pos="0.148 0 -0.025">
+                      <joint name="gripper_lower_slide" type="slide" axis="0 0 -1" range="0 0.018"
+                             damping="2.0" armature="0.01"/>
+                      <geom name="gripper_finger_bottom" type="box" pos="0 0 0" size="0.040 0.005 0.006"
+                            material="joint_mat"/>
+                    </body>
+                    <site name="tcp" pos="0.190 0 0" size="0.010" rgba="0.15 0.95 0.28 1"/>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <geom name="pick_station" type="box" pos="0.550 -0.220 0.0765" size="0.075 0.075 0.0765"
+          material="place_mat"/>
+    <geom name="place_station" type="box" pos="0.460 0.300 0.0765" size="0.075 0.075 0.0765"
+          material="place_mat"/>
+    <body name="pick_block" mocap="true" pos="0.550 -0.220 0.175">
+      <geom name="pick_block_geom" type="box" size="0.022 0.022 0.022" material="target_mat"/>
+      <site name="pick_block_center" pos="0 0 0" size="0.006" rgba="1 0.92 0.10 1"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <general name="joint1" joint="j1_yaw" ctrllimited="true" ctrlrange="-3.14 3.14"/>
+    <general name="joint2" joint="j2_pitch" ctrllimited="true" ctrlrange="-2.36 2.36"/>
+    <general name="joint3" joint="j3_pitch" ctrllimited="true" ctrlrange="-2.62 2.62"/>
+    <general name="joint4" joint="j4_roll" ctrllimited="true" ctrlrange="-3.14 3.14"/>
+    <general name="joint5" joint="j5_wrist_pitch" ctrllimited="true" ctrlrange="-1.5708 1.5708"/>
+    <general name="joint6" joint="j6_tool_roll" ctrllimited="true" ctrlrange="-3.1416 3.1416"/>
+  </actuator>
+
+  <sensor>
+    <jointpos name="j1_q" joint="j1_yaw"/>
+    <jointpos name="j2_q" joint="j2_pitch"/>
+    <jointpos name="j3_q" joint="j3_pitch"/>
+    <jointpos name="j4_q" joint="j4_roll"/>
+    <jointpos name="j5_q" joint="j5_wrist_pitch"/>
+    <jointpos name="j6_q" joint="j6_tool_roll"/>
+    <framepos name="tcp_pos" objtype="site" objname="tcp"/>
+    <framequat name="tcp_quat" objtype="site" objname="tcp"/>
+  </sensor>
+
+  <keyframe>
+    <key name="home" qpos="0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0"/>
+    <key name="j1_left" qpos="1.20 0 0 0 0 0 0 0" ctrl="1.20 0 0 0 0 0"/>
+    <key name="j1_right" qpos="-1.20 0 0 0 0 0 0 0" ctrl="-1.20 0 0 0 0 0"/>
+    <key name="reach" qpos="0.35 -0.45 0.70 0.40 0.35 -0.80 0 0" ctrl="0.35 -0.45 0.70 0.40 0.35 -0.80"/>
+    <key name="wrist_demo" qpos="0 0 0 0.90 0.75 -1.20 0 0" ctrl="0 0 0 0.90 0.75 -1.20"/>
+  </keyframe>
+</mujoco>
